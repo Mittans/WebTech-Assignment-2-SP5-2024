@@ -191,8 +191,8 @@ namespace Assig2.Controllers.API
             {
                 offencesEnum = offencesEnum.Where(i => offenceCodes.Contains(i.OffenceCode));
             }
-
-            return await Task.FromResult(offences.ToList());
+//thanks Casey
+            return await Task.FromResult(offencesEnum.ToList());
         }
 
         /// <summary>
