@@ -135,7 +135,26 @@ namespace Assig2.Controllers.API
                 return expiationCategories.OrderBy(i => i.OffenceCode);
         }
 
+        /// <summary>
+        /// Gets a camera location details
+        /// </summary>
+        /// <param name="locationId">The Selected Suburb</param>
+        /// <param name="cameraTypeCode">: Narrows the return data to just a list of the locationIds + CameraTypeCodes (Composite Primary Key)</param>
+        /// <returns>Camera location details</returns>
+        // GET: /api/Get_LocationRoadName?locationId=1&cameraTypeCode=foo
+        [HttpGet(Name = "Get_LocationRoadName")]
+        public async Task<object> Get_LocationRoadName(int locationId, string? cameraTypeCode)
+        {
+            Debug.Assert(cameraTypeCode == null || cameraCodes.Contains(cameraTypeCode), "Your provided cameraTypeCode wasn't in the list");
+            Debug.Assert(locationId > 0, "locationId was 0 or null. You must supply valid locationId or things will explode (this is bad). Try fetching from Get_ListCamerasInSuburb");
 
+            var location = await _context.CameraCodes
+                .Where(cc => cc.CameraTypeCode == cameraTypeCode && cc.LocationId == locationId)
+                .FirstOrDefaultAsync();
+
+            return location;
+        }
+        
         /// <summary>
         /// Gets a list of Expiations for a given LocationId + Camera Type. Option to return only the list of Offence Codes
         /// </summary>
